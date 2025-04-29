@@ -6,7 +6,9 @@
  */
 public interface ColorChangeable {
 	/**
-	 * Some fish can dynamically change colors, this method should do that.
+	 * Some change fish's colors.
+	 * @param bodyColor bodyColor
+	 * @param finColor finColor
 	 */
-	public abstract void setColor(String bodyColor, String finColor);
+	void setColor(String bodyColor, String finColor);
 }
