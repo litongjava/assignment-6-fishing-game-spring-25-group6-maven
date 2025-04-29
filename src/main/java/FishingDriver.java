@@ -8,7 +8,9 @@ import java.util.Random;
  * @since 4/24/22
  */
 public class FishingDriver {
-	/** Maximum pond capacity for random hooking. */
+	/**
+	 * Maximum pond capacity for random hooking.
+	 */
 	static final int POND_CAPACITY = 40;
 
 	/**
