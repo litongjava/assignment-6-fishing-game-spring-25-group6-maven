@@ -8,7 +8,7 @@ public interface Fishable {
 
 	/**
 	 * determines if the fish is legal to keep due to length. different species have
-	 * different legal sizes
+	 * different legal sizes.
 	 * 
 	 * @return true If this fish is legal size to keep.
 	 */
