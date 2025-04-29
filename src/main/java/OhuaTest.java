@@ -8,7 +8,6 @@ import org.junit.Test;
  * @author Lisa Miller
  * @since 3/22/25
  */
-
 public class OhuaTest {
 	/** constant reproductive mode for this Ia. */
 	static final String REPRODUCTIVE_MODE = "protogynous";
