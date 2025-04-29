@@ -16,11 +16,11 @@ public class Moi extends PalaMoi {
 	 * constant maximum length for this Ia. This is the state record Private because
 	 * not inherited.
 	 */
-	private static final double moiMaxLength = 30.0;
+	private static final double MOI_MAX_LENGTH = 30.0;
 	/**
 	 * constant minimum length for this Ia. Private because not inherited.
 	 */
-	private static final double moiMinLength = 16.0;
+	private static final double MOI_MIN_LENGTH = 16.0;
 
 	/**
 	 * Constructor for making Moi with random length uses I_a superclass constructor
@@ -33,7 +33,7 @@ public class Moi extends PalaMoi {
 	 *                           exception
 	 */
 	public Moi() {
-		super("Moi", moiMaxLength, moiMinLength, moiMinLength, (moiMinLength * 2), DIET_ITEMS,
+		super("Moi", MOI_MAX_LENGTH, MOI_MIN_LENGTH, MOI_MIN_LENGTH, (MOI_MIN_LENGTH * 2), DIET_ITEMS,
 				"silver", "silver with black tips", "female");
 		//method is in superclass but will use max, min length set above
 		this.initLength();
@@ -45,10 +45,11 @@ public class Moi extends PalaMoi {
 	 * within allowed values after calling constructor. This is the fourth phase of
 	 * the species and always female.
 	 * 
+	 * @param length length.
 	 * @throws FishSizeException if length is less than minLength
 	 */
 	public Moi(double length) {
-		super("Moi", moiMaxLength, moiMinLength, length, (length * 2), DIET_ITEMS, "silver",
+		super("Moi", MOI_MAX_LENGTH, MOI_MIN_LENGTH, length, (length * 2), DIET_ITEMS, "silver",
 				"silver with black tips", "female");
 
 	}
@@ -71,6 +72,7 @@ public class Moi extends PalaMoi {
 	/**
 	 * returns the same fish Moi don't level up, this is the terminal type. method
 	 * is required but shouldn't do anything
+	 * @return moi.
 	 */
 	public Moi levelUp() {
 		return this;
