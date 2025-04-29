@@ -222,15 +222,8 @@ public class MoiLi_i extends FishableI_a implements SexChangeable {
 		month = month.toLowerCase();
 		boolean isOk = true;
 
-		switch (month) {
-		case "june":
-		case "july":
-		case "august":
+		if ("june".equals(month) || "july".equals(month) || "august".equals(month)) {
 			isOk = false;
-			break;
-		default:
-			isOk = true;
-			break;
 		}
 		return isOk;
 	}
