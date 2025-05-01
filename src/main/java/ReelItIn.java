@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -69,12 +68,12 @@ public class ReelItIn {
 		for (int i = 0; i < 10; i++) {
 			al.add(new MoiLi_i());
 		}
-		//      for (int i = 0; i < 10; i++) {
-		//         al.add(new Oama());
-		//      }
-		//       for (int i = 0; i < 10; i++) {
-		//          al.add(new Pua_ama());
-		//       }
+		for (int i = 0; i < 10; i++) {
+		   al.add(new Oama());
+		}
+		for (int i = 0; i < 10; i++) {
+		   al.add(new Pua_ama());
+		}
 		for (int i = 0; i < 10; i++) {
 			al.add(new Ohua());
 		}
@@ -95,13 +94,13 @@ public class ReelItIn {
 	public static void wavePrint(String text) {
 		System.out.print(WAVE_PATTERN + SECOND_WAVE_PATTERN + WAVE_PATTERN);
 		System.out.println(SECOND_WAVE_PATTERN + WAVE_PATTERN + SECOND_WAVE_PATTERN);
-		System.out.println(EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE
-				+ EQ_SIGN_LINE);
+		System.out.println(EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE
+          + EQ_SIGN_LINE + EQ_SIGN_LINE);
 		System.out.println(text);
 		System.out.print(WAVE_PATTERN + SECOND_WAVE_PATTERN + WAVE_PATTERN);
 		System.out.println(SECOND_WAVE_PATTERN + WAVE_PATTERN + SECOND_WAVE_PATTERN);
-		System.out.println(EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE
-				+ EQ_SIGN_LINE);
+		System.out.println(EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE
+          + EQ_SIGN_LINE + EQ_SIGN_LINE);
 
 	} //end of wavePrint.
 
@@ -112,7 +111,7 @@ public class ReelItIn {
 	 */
 	public static void growFish(ArrayList<FishableI_a> al) {
 		FishableI_a ia;
-		boolean debug = true; //turn printing on and off
+		boolean debug = false; //turn printing on and off
 
 		for (int m = 0; m < 24; m++) {
 			//all fish in the pond
@@ -199,7 +198,7 @@ public class ReelItIn {
 			// Each player takes a turn
 			Player[] players = { p1, p2 };
 			for (int j = 0; j < players.length; j++) {
-				Player currentPlayer = players[i];
+				Player currentPlayer = players[j];
 				System.out.println("\n" + currentPlayer.getName() + ", it's your turn!");
 
 				int attempts = 0;
@@ -231,7 +230,8 @@ public class ReelItIn {
 										methodChoice = Integer.parseInt(input.nextLine());
 									} catch (NumberFormatException e) {
 										System.out.println(
-												"Invalid input." + "Please choose a valid catch method.");
+												"Invalid input." + "Please choose a valid catch method using"
+                                       + " numbers between 1 and 5.");
 										continue; // Re-ask for the catch method
 									}
 									switch (methodChoice) {
@@ -251,14 +251,13 @@ public class ReelItIn {
 											catchMethod = "throw net";
 											break;
 										default:
-											System.out.println(
-													"Invalid choice." + "Please choose a valid catch method.");
+											System.out.println("Invalid choice."
+                                     + "Please choose a valid catch method.");
 											continue; // Ask again if invalid
 									}
 									break; // Exit loop once a valid choice is made
 								}
-								boolean caught = rand.nextBoolean();
-								if (caught) {
+								if (isCaught) {
 									System.out.println("You have caught a fish!");
 									System.out.println(fish);
 
@@ -282,7 +281,7 @@ public class ReelItIn {
 												}
 												break;
 											case "n":
-												System.out.println("You released the fish.");
+												wavePrint("You released the fish.");
 												break;
 											case "r":
 												printFishInfo();
@@ -428,100 +427,6 @@ public class ReelItIn {
 			}
 		}
 	} //end of fishInfo printing method.
-
-	/**
-	 * Player object that has a sack to save, view, or discard fish.
-	 */
-	public static class Player {
-		/** name of player. */
-		private String name;
-		/** sack that holds the collected fish. */
-		private ArrayList<FishableI_a> sack;
-
-		/**
-		 * Makes a player with the given name.
-		 * 
-		 * @param name The name of the player
-		 */
-		public Player(String name) {
-			this.name = name;
-			this.sack = new ArrayList<>();
-		}
-
-		/**
-		 * Adds a fish to the player's sack.
-		 * 
-		 * @param fish The fish to be added.
-		 */
-		public void addFish(FishableI_a fish) {
-			sack.add(fish);
-		}
-
-		/**
-		 * Removes and returns a fish at the specified index from the sack.
-		 * 
-		 * @param index The index of the fish to remove.
-		 * @return The removed fish.
-		 */
-		public FishableI_a removeFish(int index) {
-			return sack.remove(index);
-		}
-
-		/** Clears all the fish from the sack. */
-		public void clearSack() {
-			sack.clear();
-		}
-
-		/**
-		 * Returns the name of the player.
-		 * 
-		 * @return The player's name
-		 */
-		public String getName() {
-			return name;
-		}
-
-		/**
-		 * Returns the number of fish in the sack.
-		 * 
-		 * @return The size of the sack.
-		 */
-		public int getSackSize() {
-			return sack.size();
-		}
-
-		/**
-		 * Displays the contents of the sack, sorted from longest to shortest fish.
-		 */
-		public void viewSack() {
-			if (sack.isEmpty()) {
-				System.out.println("Your sack is empty.");
-				return;
-			}
-
-			// Sort from longest to shortest
-			ArrayList<FishableI_a> sorted = new ArrayList<>(sack);
-			Collections.sort(sorted);
-			System.out.println("Your sack (longest to shortest):");
-			for (FishableI_a fish : sorted) {
-				System.out.println(fish);
-			}
-		}
-
-		/**
-		 * Displays the contents of the sack with their corresponding indexes.
-		 */
-		public void viewSackWithIndex() {
-			if (sack.isEmpty()) {
-				System.out.println("Your sack is empty.");
-				return;
-			}
-
-			for (int i = 0; i < sack.size(); i++) {
-				System.out.println(i + ": " + sack.get(i));
-			}
-		}
-	}
 
 	/**
 	 * Shows a randomly generated message for the user, using 111 techniques.
