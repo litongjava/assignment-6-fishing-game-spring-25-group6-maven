@@ -22,7 +22,7 @@ public class GameLogic {
 	private Player player1;
 	private Player player2;
 	private Player currentPlayer;
-	private int currentMonthIndex; // 0 = January, 11 = December
+	private int currentMonthIndex;
 	private int attemptsLeft;
 	private boolean isGameOver;
 	private Random random;
@@ -34,10 +34,7 @@ public class GameLogic {
 		random = new Random();
 		fishPond = new ArrayList<>();
 		isGameOver = false;
-		// Other variables will be initialized in setupGame()
 	}
-
-	// --- Setup Methods ---
 
 	/**
 	 * Initializes the entire game: gets player names, creates players, fills the
@@ -72,8 +69,7 @@ public class GameLogic {
 		while (name == null || name.trim().isEmpty()) {
 			name = JOptionPane.showInputDialog(null, prompt, "Player Setup",
 					JOptionPane.QUESTION_MESSAGE);
-			if (name == null) { // Handle cancel button
-				// You might want to exit or provide a default name
+			if (name == null) {
 				System.out.println("Player setup cancelled. Exiting.");
 				System.exit(0);
 			} else if (name.trim().isEmpty()) {
@@ -88,7 +84,7 @@ public class GameLogic {
 	 * Fills the fish pond with initial baby fish.
 	 */
 	private void fillPond() {
-		fishPond.clear(); // Ensure pond is empty before filling
+		fishPond.clear();
 		// Add 10 of each baby fish type
 		for (int i = 0; i < 10; i++) {
 			fishPond.add(new MoiLi_i());
@@ -111,8 +107,6 @@ public class GameLogic {
 		}
 		System.out.println("Initial growth complete.");
 	}
-
-	// --- Core Game Mechanics ---
 
 	/**
 	 * Simulates all fish in the pond eating and potentially growing/leveling up for
@@ -145,14 +139,13 @@ public class GameLogic {
 				try {
 					FishableI_a biggerFish = fish.levelUp();
 					fishPond.set(i, biggerFish); // Replace with the leveled-up fish
-					// System.out.println("A fish leveled up to: " + biggerFish.getName()); // Debug
 				} catch (FishSizeException finalForm) {
-					// Fish is already at its maximum size/form, no change needed
-					// System.out.println(fish.getName() + " is at max size."); // Debug
+					finalForm.printStackTrace();
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				System.err.println("Error growing fish: " + fish.getName() + " - " + e.getMessage());
-				// Handle other potential exceptions during eat/grow if necessary
+
 			}
 		}
 	}
@@ -170,7 +163,6 @@ public class GameLogic {
 			currentPlayer = player2;
 		} else {
 			currentPlayer = player1;
-			// Both players have had a turn, advance the month
 			nextMonth();
 		}
 
@@ -192,7 +184,7 @@ public class GameLogic {
 			// Winner calculation will be done later
 		} else {
 			System.out.println("Advancing to month: " + getCurrentMonthName());
-			growFishSingleMonth(); // Grow fish at the start of the new month
+			growFishSingleMonth();
 		}
 	}
 
@@ -209,24 +201,21 @@ public class GameLogic {
 			return null;
 		}
 
-		int hookSpot = random.nextInt(POND_CAPACITY); // Simulate casting to a random spot
+		int hookSpot = random.nextInt(POND_CAPACITY);
 
 		if (hookSpot >= fishPond.size()) {
-			// Cast into an empty part of the pond
 			return null;
 		} else {
 			// Hooked something!
 			FishableI_a potentialCatch = fishPond.get(hookSpot);
-			boolean actuallyCaught = random.nextBoolean(); // 50% chance to land it vs. it getting away
+			boolean actuallyCaught = random.nextBoolean();
 
 			if (actuallyCaught) {
 				// Successfully caught, remove from pond temporarily
-				// It will be permanently removed if kept legally
 				fishPond.remove(hookSpot);
 				return potentialCatch;
 			} else {
-				// Fish got away
-				return null; // Represent "got away" same as "didn't catch" for simplicity here
+				return null;
 			}
 		}
 	}
@@ -254,7 +243,7 @@ public class GameLogic {
 		} else {
 			// Illegal catch! Confiscate sack and return the illegal fish to the pond.
 			currentPlayer.clearSack();
-			fishPond.add(fish); // Put the illegal fish back
+			fishPond.add(fish);
 			// Construct a more specific reason (optional but helpful)
 			String reason = getIllegalityReason(fish, catchMethod);
 			return "ILLEGAL CATCH! " + reason + "\nAll fish confiscated!";
@@ -272,7 +261,7 @@ public class GameLogic {
 		if (fish == null)
 			return "Error: No fish to release.";
 
-		fishPond.add(fish); // Put the released fish back into the pond
+		fishPond.add(fish);
 		return "Released fish: " + fish.getName();
 	}
 
@@ -287,21 +276,14 @@ public class GameLogic {
 		if (fish == null)
 			return false;
 
-		// Check 1: Is it the right season?
+		// Check 1: Is it the right season
 		if (!fish.isInSeason(MONTH_NAMES[currentMonthIndex])) {
 			return false;
 		}
 
 		// Check 2: Is it legal size? (Only applies if it's a game fish)
-		// Note: Oama/Weke is always legal size according to rules.
-		// The isLegalSize() method should handle the specific lengths.
 		if (fish.isGamefish() && !fish.isLegalSize()) {
-			// Special case: Oama/Weke has no min size, so isLegalSize might always be true for it.
-			// Let's rely on the implementation within the fish classes.
-			// If a fish *can* be a game fish but isn't currently legal size, it's illegal.
-			// If a fish is *never* a game fish (e.g., too small Moi-li'i), isGameFish() is false.
-			// If a fish *is* a game fish and *is* legal size, this check passes.
-			if (!fish.getEnglishName().contains("Goatfish")) { // Oama/Weke family is always legal size
+			if (!fish.getEnglishName().contains("Goatfish")) {
 				return false;
 			}
 		}
@@ -387,13 +369,7 @@ public class GameLogic {
 		if (attemptsLeft > 0) {
 			attemptsLeft--;
 		}
-		// Check if turn should end automatically after using the last attempt
-		// if (attemptsLeft <= 0 && !isGameOver) {
-		//     nextTurn(); // Or let the GUI trigger next turn explicitly
-		// }
 	}
-
-	// --- Getter Methods for GUI ---
 
 	public Player getCurrentPlayer() {
 		return currentPlayer;
@@ -425,7 +401,8 @@ public class GameLogic {
 	 */
 	public String getStatusString() {
 		if (isGameOver) {
-			return "Game Over! Calculating results..."; // Winner calculation needed
+			// Winner calculation needed
+			return "Game Over! Calculating results...";
 		}
 		return getCurrentPlayerName() + "'s Turn - " + getCurrentMonthName() + " - Attempts Left: "
 				+ attemptsLeft;
@@ -440,7 +417,7 @@ public class GameLogic {
 	public String getCurrentPlayerSackInfo() {
 		if (currentPlayer == null)
 			return "No current player.";
-		return currentPlayer.getSackContentsSorted(); // Assumes Player class has this method
+		return currentPlayer.getSackContentsSorted();
 	}
 
 	/**
@@ -483,8 +460,6 @@ public class GameLogic {
 
 		return rules.toString();
 	}
-
-	// --- Winner Calculation (Placeholder for Phase 4) ---
 
 	/**
 	 * Calculates the winner based on the sum of the lengths of the top 3 fish.
@@ -529,7 +504,7 @@ public class GameLogic {
 			return 0.0;
 		}
 		// Sort sack by length descending (longest first)
-		Collections.sort(sack, Collections.reverseOrder()); // Uses the compareTo in FishableI_a
+		Collections.sort(sack, Collections.reverseOrder());
 
 		double totalLength = 0.0;
 		int count = 0;
@@ -538,7 +513,7 @@ public class GameLogic {
 				totalLength += fish.getLength();
 				count++;
 			} else {
-				break; // Stop after the top 3
+				break;
 			}
 		}
 		return totalLength;

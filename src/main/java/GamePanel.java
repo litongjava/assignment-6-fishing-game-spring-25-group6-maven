@@ -16,8 +16,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	// --- GUI Components ---
 	private JLabel statusLabel;
-	private JLabel pondSizeLabel; // New label for pond size
-	private JPanel topPanel; // Panel to hold status and pond size
+	// New label for pond size
+	private JLabel pondSizeLabel;
+	// Panel to hold status and pond size
+	private JPanel topPanel;
 	private JTextArea outputArea;
 	private JScrollPane outputScrollPane;
 	private JButton catchButton;
@@ -37,7 +39,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	// --- Constants ---
 	private static final String[] CATCH_METHODS = { "pole", "net", "spear", "trap", "throw net" };
-	private static final String SEPARATOR = "----------------------------------------"; // For output clarity
+	// For output clarity
+	private static final String SEPARATOR = "----------------------------------------";
 
 	/**
 	 * Constructor for the GamePanel. Initializes and arranges the GUI components,
@@ -59,9 +62,11 @@ public class GamePanel extends JPanel implements ActionListener {
 		pondSizeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		pondSizeLabel.setFont(new Font("Arial", Font.ITALIC, 12));
 
-		topPanel = new JPanel(new BorderLayout()); // Use BorderLayout for top panel
+		// Use BorderLayout for top panel
+		topPanel = new JPanel(new BorderLayout());
 		topPanel.add(statusLabel, BorderLayout.CENTER);
-		topPanel.add(pondSizeLabel, BorderLayout.SOUTH); // Add pond size below status
+		// Add pond size below status
+		topPanel.add(pondSizeLabel, BorderLayout.SOUTH);
 
 		// --- Center Output Area ---
 		outputArea = new JTextArea(20, 60);
@@ -208,7 +213,6 @@ public class GamePanel extends JPanel implements ActionListener {
 			updateButtonStates(false);
 		}
 		updateStatusLabel();
-		// Pond size updated via actionPerformed caller
 	}
 
 	private void handleKeepDecision(boolean keep) {
@@ -231,7 +235,6 @@ public class GamePanel extends JPanel implements ActionListener {
 		updateButtonStates(true);
 		checkTurnEnd();
 		updateStatusLabel();
-		// Pond size updated via actionPerformed caller
 	}
 
 	/**
@@ -316,9 +319,6 @@ public class GamePanel extends JPanel implements ActionListener {
 				appendOutput("Month: " + gameLogic.getCurrentMonthName() + " - Fish are growing...");
 				appendOutput("It's now " + gameLogic.getCurrentPlayerName() + "'s turn.");
 				appendOutput("Select a catch method and try your luck!");
-				// Clear output for new turn? Optional.
-				// clearOutput();
-				// setOutputText("It's now " + gameLogic.getCurrentPlayerName() + "'s turn in " + gameLogic.getCurrentMonthName() + ".");
 			}
 		}
 	}
@@ -328,27 +328,30 @@ public class GamePanel extends JPanel implements ActionListener {
 		appendOutput("    GAME OVER!");
 		appendOutput(SEPARATOR);
 		// Display final sacks before results
-		appendOutput("\n--- Final Sack: " + gameLogic.getCurrentPlayer().getName() + " ---"); // Player who just finished
+		appendOutput("\n--- Final Sack: " + gameLogic.getCurrentPlayer().getName() + " ---");
 		appendOutput(gameLogic.getCurrentPlayerSackInfo());
 		// Need logic to get the *other* player's sack info too
-		Player p1 = gameLogic.getCurrentPlayer(); // This is slightly awkward way to get players
-		Player p2 = (p1 == gameLogic.getPlayer1()) ? gameLogic.getPlayer2() : gameLogic.getPlayer1(); // Find the other player
+		Player p1 = gameLogic.getCurrentPlayer();
+		Player p2 = (p1 == gameLogic.getPlayer1()) ? gameLogic.getPlayer2() : gameLogic.getPlayer1(); 
 		appendOutput("\n--- Final Sack: " + p2.getName() + " ---");
-		appendOutput(p2.getSackContentsSorted()); // Display other player's sack
+		// Display other player's sack
+		appendOutput(p2.getSackContentsSorted());
 
 		appendOutput("\n" + SEPARATOR);
-		appendOutput(gameLogic.getGameResult()); // Display final scores and winner
+		// Display final scores and winner
+		appendOutput(gameLogic.getGameResult());
 		appendOutput(SEPARATOR);
 
 		updateButtonStates(false);
 		String winnerMsg = gameLogic.getGameResult()
-				.substring(gameLogic.getGameResult().lastIndexOf("inches\n\n") + 8); // Extract winner part
+				.substring(gameLogic.getGameResult().lastIndexOf("inches\n\n") + 8);
 		statusLabel.setText("Game Over! " + winnerMsg);
-		pondSizeLabel.setText("Final Pond Size: " + gameLogic.getPondSize()); // Show final pond size
+		pondSizeLabel.setText("Final Pond Size: " + gameLogic.getPondSize());
 	}
 
-	// --- GUI Update Helpers ---
-
+	/**
+	 * update Status Label
+	 */
 	public void updateStatusLabel() {
 		if (gameLogic != null) {
 			SwingUtilities.invokeLater(() -> statusLabel.setText(gameLogic.getStatusString()));
@@ -363,7 +366,6 @@ public class GamePanel extends JPanel implements ActionListener {
 			SwingUtilities.invokeLater(
 					() -> pondSizeLabel.setText("Fish in Pond: " + gameLogic.getPondSize()));
 		} else if (gameLogic != null && gameLogic.isGameOver()) {
-			// Handled in handleGameOver to show "Final Pond Size"
 		}
 	}
 

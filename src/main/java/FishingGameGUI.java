@@ -7,8 +7,10 @@ import javax.swing.SwingUtilities;
  */
 public class FishingGameGUI extends JFrame {
 
-	private GamePanel gamePanel; // The main panel containing game elements
-	private GameLogic gameLogic; // The core game logic handler
+	// The main panel containing game elements
+	private GamePanel gamePanel;
+	// The core game logic handler
+	private GameLogic gameLogic;
 
 	/**
 	 * Constructor for the main game window.
@@ -30,13 +32,12 @@ public class FishingGameGUI extends JFrame {
 		add(gamePanel);
 
 		// Pack the frame to fit the preferred sizes of its components
-		pack(); // Adjust window size based on components
+		// Adjust window size based on components
+		pack();
 
 		// Center the window again after packing
 		setLocationRelativeTo(null);
 
-		// Make the window visible (do this last after adding components and packing)
-		// setVisible(true); // Visibility will be set in main method
 	}
 
 	/**
