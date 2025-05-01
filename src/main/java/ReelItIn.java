@@ -28,7 +28,7 @@ public class ReelItIn {
 	 * MONTH_NAMES.
 	 */
 	public static final String[] MONTH_NAMES = { "January", "February", "March", "April", "May",
-		"June", "July", "August", "September", "October", "November", "December" };
+			"June", "July", "August", "September", "October", "November", "December" };
 
 	/**
 	 * main method.
@@ -69,10 +69,10 @@ public class ReelItIn {
 			al.add(new MoiLi_i());
 		}
 		for (int i = 0; i < 10; i++) {
-		   al.add(new Oama());
+			al.add(new Oama());
 		}
 		for (int i = 0; i < 10; i++) {
-		   al.add(new Pua_ama());
+			al.add(new Pua_ama());
 		}
 		for (int i = 0; i < 10; i++) {
 			al.add(new Ohua());
@@ -94,13 +94,13 @@ public class ReelItIn {
 	public static void wavePrint(String text) {
 		System.out.print(WAVE_PATTERN + SECOND_WAVE_PATTERN + WAVE_PATTERN);
 		System.out.println(SECOND_WAVE_PATTERN + WAVE_PATTERN + SECOND_WAVE_PATTERN);
-		System.out.println(EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE
-          + EQ_SIGN_LINE + EQ_SIGN_LINE);
+		System.out.println(EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE
+				+ EQ_SIGN_LINE);
 		System.out.println(text);
 		System.out.print(WAVE_PATTERN + SECOND_WAVE_PATTERN + WAVE_PATTERN);
 		System.out.println(SECOND_WAVE_PATTERN + WAVE_PATTERN + SECOND_WAVE_PATTERN);
-		System.out.println(EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE
-          + EQ_SIGN_LINE + EQ_SIGN_LINE);
+		System.out.println(EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE + EQ_SIGN_LINE
+				+ EQ_SIGN_LINE);
 
 	} //end of wavePrint.
 
@@ -231,7 +231,7 @@ public class ReelItIn {
 									} catch (NumberFormatException e) {
 										System.out.println(
 												"Invalid input." + "Please choose a valid catch method using"
-                                       + " numbers between 1 and 5.");
+														+ " numbers between 1 and 5.");
 										continue; // Re-ask for the catch method
 									}
 									switch (methodChoice) {
@@ -251,8 +251,8 @@ public class ReelItIn {
 											catchMethod = "throw net";
 											break;
 										default:
-											System.out.println("Invalid choice."
-                                     + "Please choose a valid catch method.");
+											System.out.println(
+													"Invalid choice." + "Please choose a valid catch method.");
 											continue; // Ask again if invalid
 									}
 									break; // Exit loop once a valid choice is made
@@ -469,5 +469,7 @@ public class ReelItIn {
 		}
 		return s;
 	}
+
+
 
 }
