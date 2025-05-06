@@ -5,7 +5,13 @@ import java.util.Collections;
  * Player object that has a sack to save, view, or discard fish.
  */
 public class Player {
+	/**
+	 * name.
+	 */
 	private String name;
+	/**
+	 * sack.
+	 */
 	private ArrayList<FishableI_a> sack;
 
 	/**
