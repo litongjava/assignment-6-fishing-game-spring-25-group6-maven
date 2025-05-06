@@ -9,13 +9,23 @@ import java.util.Random;
  */
 public class GameLogic {
 
-	// --- Constants ---
+	/**
+	 * MONTHS_IN_YEAR.
+	 */
 	private static final int MONTHS_IN_YEAR = 12;
-	private static final int INITIAL_GROWTH_MONTHS = 24; // 2 years initial growth
+	/**
+	 * TURNS_PER_PLAYER.
+	 */
 	private static final int TURNS_PER_PLAYER = 3;
-	private static final int POND_CAPACITY = 60; // Used for random hooking spots
+	/**
+	 * POND_CAPACITY.
+	 */
+	private static final int POND_CAPACITY = 60; 
+	/**
+	 * MONTH_NAMES.
+	 */
 	private static final String[] MONTH_NAMES = { "January", "February", "March", "April", "May",
-			"June", "July", "August", "September", "October", "November", "December" };
+		"June", "July", "August", "September", "October", "November", "December" };
 
 	// --- Game State Variables ---
    /**The fishpond where players can fish.*/
@@ -194,8 +204,9 @@ public class GameLogic {
 	 * turns, advances to the next month.
 	 */
 	public void nextTurn() {
-		if (isGameOver)
+		if (isGameOver) {
 			return;
+		}
 
 		// Switch player
 		if (currentPlayer == player1) {
@@ -269,8 +280,9 @@ public class GameLogic {
 	 *         applied).
 	 */
 	public String keepFish(FishableI_a fish, String catchMethod) {
-		if (fish == null)
+		if (fish == null) {
 			return "Error: No fish to keep.";
+		}
 
 		boolean legal = checkLegality(fish, catchMethod);
 
@@ -297,8 +309,9 @@ public class GameLogic {
 	 * @return A String message indicating the outcome.
 	 */
 	public String releaseFish(FishableI_a fish) {
-		if (fish == null)
+		if (fish == null) {
 			return "Error: No fish to release.";
+		}
 
 		fishPond.add(fish);
 		return "Released fish: " + fish.getName();
@@ -312,8 +325,9 @@ public class GameLogic {
 	 * @return true if legal, false otherwise.
 	 */
 	private boolean checkLegality(FishableI_a fish, String catchMethod) {
-		if (fish == null)
+		if (fish == null) {
 			return false;
+		}
 
 		// Check 1: Is it the right season
 		if (!fish.isInSeason(MONTH_NAMES[currentMonthIndex])) {
@@ -352,8 +366,9 @@ public class GameLogic {
 	 * @return A string explaining the reason.
 	 */
 	private String getIllegalityReason(FishableI_a fish, String catchMethod) {
-		if (fish == null)
+		if (fish == null) {
 			return "Unknown reason.";
+		}
 
 		if (!fish.isInSeason(MONTH_NAMES[currentMonthIndex])) {
 			return fish.getName() + " is out of season in " + getCurrentMonthName() + ".";
@@ -410,14 +425,26 @@ public class GameLogic {
 		}
 	}
 
+	/**
+	 * getCurrentPlayer.
+	 * @return Player.
+	 */
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 
+	/**
+	 * getCurrentPlayerName.
+	 * @return String.
+	 */
 	public String getCurrentPlayerName() {
 		return currentPlayer != null ? currentPlayer.getName() : "N/A";
 	}
 
+	/**
+	 * getCurrentMonthName.
+	 * @return String.
+	 */
 	public String getCurrentMonthName() {
 		if (currentMonthIndex >= 0 && currentMonthIndex < MONTH_NAMES.length) {
 			return MONTH_NAMES[currentMonthIndex];
@@ -425,10 +452,18 @@ public class GameLogic {
 		return "Invalid Month";
 	}
 
+	/**
+	 * getAttemptsLeft.
+	 * @return int
+	 */
 	public int getAttemptsLeft() {
 		return attemptsLeft;
 	}
 
+	/**
+	 * isGameOver.
+	 * @return boolean.
+	 */
 	public boolean isGameOver() {
 		return isGameOver;
 	}
@@ -454,8 +489,9 @@ public class GameLogic {
 	 * @return String representation of the sack, or "Sack is empty."
 	 */
 	public String getCurrentPlayerSackInfo() {
-		if (currentPlayer == null)
+		if (currentPlayer == null) {
 			return "No current player.";
+		}
 		return currentPlayer.getSackContentsSorted();
 	}
 
@@ -484,14 +520,17 @@ public class GameLogic {
 		rules.append("Goal: Catch the 3 longest fish over 12 months.\n");
 		rules.append("Turns: 3 attempts per player per month.\n");
 		rules.append(
-				"Penalty: Keeping an illegal fish (wrong size, season, or method) confiscates your entire sack!\n\n");
+				"Penalty: Keeping an illegal fish (wrong size, season, or method) "
+				//
+				+ "confiscates your entire sack!\n\n");
 
 		// Add details for each fish family (condensed)
 		rules.append("Mullet ('Anae): Legal >= 11in, Season Apr-Nov, Methods: net, pole.\n");
 		rules.append(
 				"Parrotfish (Uhu): Legal >= 12in, Season All Year, Methods: throw net, spear, pole.\n");
 		rules.append(
-				"Goatfish (Weke): No Min Size, Season All Year, Methods: net, trap, pole. (Bag limit 50 - not enforced in game yet).\n");
+				"Goatfish (Weke): No Min Size, Season All Year, Methods: net, trap, pole. "
+				+ "(Bag limit 50 - not enforced in game yet).\n");
 		rules.append("Threadfin (Moi): Legal >= 11in, Season Sep-May, Methods: net, pole.\n\n");
 
 		rules.append("Always check size, season (current month: ").append(getCurrentMonthName())
