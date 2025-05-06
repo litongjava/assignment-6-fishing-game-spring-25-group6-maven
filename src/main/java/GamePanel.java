@@ -19,18 +19,31 @@ public class GamePanel extends JPanel implements ActionListener {
 	// New label for pond size
 	private JLabel pondSizeLabel;
 	// Panel to hold status and pond size
+   /**The top part of the panel.*/
 	private JPanel topPanel;
+   /**Displays the font.*/
 	private JTextArea outputArea;
+   /**Displays the surrounding background.*/
 	private JScrollPane outputScrollPane;
+   /**The button for catching the fish.*/
 	private JButton catchButton;
+   /**The button for the rules.*/
 	private JButton rulesButton;
+   /**The button to view the sack.*/
 	private JButton sackButton;
+   /**The button to allow throwing back.*/
 	private JButton throwBackButton;
+   /**Shows the options for each button.*/
 	private JPanel actionButtonPanel;
+   /**Shows options for a caught fish.*/
 	private JPanel decisionPanel;
+   /**The button to keep the fish.*/
 	private JButton keepButton;
+   /**The button to release the fish.*/
 	private JButton releaseButton;
+   /**Displays the methods of catching a fish.*/
 	private JComboBox<String> methodComboBox;
+   /**Displays the prompt to choose a method.*/
 	private JLabel methodLabel;
 
 	// --- State Variables ---

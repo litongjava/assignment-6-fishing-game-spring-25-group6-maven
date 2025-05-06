@@ -13,18 +13,28 @@ public class GameLogic {
 	private static final int MONTHS_IN_YEAR = 12;
 	private static final int INITIAL_GROWTH_MONTHS = 24; // 2 years initial growth
 	private static final int TURNS_PER_PLAYER = 3;
-	private static final int POND_CAPACITY = 40; // Used for random hooking spots
+	private static final int POND_CAPACITY = 60; // Used for random hooking spots
 	private static final String[] MONTH_NAMES = { "January", "February", "March", "April", "May",
 			"June", "July", "August", "September", "October", "November", "December" };
 
 	// --- Game State Variables ---
+   /**The fishpond where players can fish.*/
 	private ArrayList<FishableI_a> fishPond;
+   /**Player 1 as an instance variable.*/
 	private Player player1;
+   /**Player 2 as an instance variable.*/
 	private Player player2;
+   /**The current player.*/
 	private Player currentPlayer;
+   /**The current month of the year.*/
 	private int currentMonthIndex;
+   /**The amount of attempts the player has left.*/
 	private int attemptsLeft;
+   /**Determines if the fish has been caught.*/
+   private boolean isCaught = false;
+   /**Determines if the game is over.*/
 	private boolean isGameOver;
+   /**Initialises the randomisation variable.*/
 	private Random random;
 
 	/**
@@ -49,8 +59,8 @@ public class GameLogic {
 		player2 = new Player(p2Name);
 
 		// Initialize game state
-		fillPond();
-		initialGrowFish(INITIAL_GROWTH_MONTHS); // Grow fish for 2 years
+		fishPond = fillPond();
+		growFish(fishPond); // Grow fish for 2 years
 
 		currentPlayer = player1; // Player 1 starts
 		currentMonthIndex = 0; // Start in January
@@ -80,75 +90,110 @@ public class GameLogic {
 		return name.trim();
 	}
 
-	/**
-	 * Fills the fish pond with initial baby fish.
-	 */
-	private void fillPond() {
-		fishPond.clear();
-		// Add 10 of each baby fish type
-		for (int i = 0; i < 10; i++) {
-			fishPond.add(new MoiLi_i());
-			fishPond.add(new Oama());
-			fishPond.add(new Pua_ama());
-			fishPond.add(new Ohua());
-		}
-		System.out.println("Initial pond size: " + fishPond.size()); // Debugging
-	}
-
-	/**
-	 * Simulates fish growth for a specified number of months.
+   /**
+	 * Adds 40 baby I_a to ArrayList. This should match POND_CAPACITY.
 	 * 
-	 * @param months The number of months to simulate growth.
+	 * @return ArrayList with small I_a in it.
 	 */
-	private void initialGrowFish(int months) {
-		System.out.println("Simulating initial fish growth for " + months + " months...");
-		for (int m = 0; m < months; m++) {
-			growFishSingleMonth();
+	public static ArrayList<FishableI_a> fillPond() {
+
+		ArrayList<FishableI_a> al = new ArrayList<>();
+		//make 60 fish in the pond
+		//15 of baby of each species
+
+		for (int i = 0; i < 15; i++) {
+			al.add(new MoiLi_i());
 		}
-		System.out.println("Initial growth complete.");
-	}
+		for (int i = 0; i < 15; i++) {
+		   al.add(new Oama());
+		}
+		for (int i = 0; i < 15; i++) {
+		   al.add(new Pua_ama());
+		}
+		for (int i = 0; i < 15; i++) {
+			al.add(new Ohua());
+		}
+
+		//for testing empty locations
+		//   for (int i = 0; i < 30; i++) {
+		//          al.remove(i);
+		//       }
+		return al;
+
+	} //fillPond method
 
 	/**
-	 * Simulates all fish in the pond eating and potentially growing/leveling up for
-	 * a single month cycle.
+	 * Runs arraylist of I_a through 24 eating/growing cycles.
+	 * 
+	 * @param al the list of fish.
 	 */
-	private void growFishSingleMonth() {
-		// Iterate backwards to avoid issues when replacing fish after level up
-		for (int i = fishPond.size() - 1; i >= 0; i--) {
-			FishableI_a fish = fishPond.get(i);
-			if (fish == null)
-				continue; // Should not happen, but safe check
+	public static void growFish(ArrayList<FishableI_a> al) {
+		FishableI_a ia;
+		boolean debug = false; //turn printing on and off
 
-			try {
-				// Determine food type based on fish type (simplified)
-				String food = "plankton"; // Default food
-				String engName = fish.getEnglishName();
-				if (engName.contains("Mullet")) {
-					food = "algae";
-				} else if (engName.contains("Goatfish")) {
-					food = "worms";
-				} else if (engName.contains("Parrotfish")) {
-					food = "algae";
-				} else if (engName.contains("threadfin")) {
-					food = "crustaceans";
+		for (int m = 0; m < 24; m++) {
+			//all fish in the pond
+			for (int i = 0; i < al.size(); i++) {
+				//loop over array 
+				if (debug) {
+					System.out.println("==========================");
+					System.out.println("Feeding  the fish" + i);
+					System.out.println("==========================\n");
 				}
-				fish.eat(food); // Fish eats and grows
+				ia = al.get(i);
 
-			} catch (FishSizeException fse) {
-				// Fish needs to level up
-				try {
-					FishableI_a biggerFish = fish.levelUp();
-					fishPond.set(i, biggerFish); // Replace with the leveled-up fish
-				} catch (FishSizeException finalForm) {
-					finalForm.printStackTrace();
+				if (debug) {
+					System.out.println(ia);
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.err.println("Error growing fish: " + fish.getName() + " - " + e.getMessage());
 
+				try { //must check for need to levelUp
+					//use EnglishName because doesn't change with size
+					if (ia.getEnglishName().equals("Striped Mullet")) {
+						ia.eat("algae");
+					} else if (ia.getEnglishName().equals("Goatfish")
+							|| ia.getEnglishName().equals("Yellowfin Goatfish")
+							|| ia.getEnglishName().equals("Square-spot Goatfish")) {
+						ia.eat("worms");
+					} else if (ia.getEnglishName().equals("Parrotfish")) {
+						ia.eat("algae");
+
+					} else if (ia.getEnglishName().equals("Six-fingered threadfin")) {
+						ia.eat("crustaceans");
+					}
+
+					if (debug) {
+						System.out.println(
+								"****After eat and grow: " + ia.getName() + ": " + ia.getLength() + "\n");
+					}
+				} catch (FishSizeException fe) {
+					if (debug) {
+						System.out.println(fe.getMessage());
+					}
+
+					try {
+						ia = ia.levelUp();
+						// Replace with upgraded fish
+						al.set(i, ia);
+
+						if (debug) {
+							System.out.println("Fish leveled up: " + ia.getName());
+						}
+					} catch (FishSizeException e) {
+						// Final form (like Uhu) can't level up — just print a message
+						if (debug) {
+							System.out.println("This fish can't level up anymore.");
+						}
+						al.set(i, ia);
+					}
+				}
 			}
+		} // close m loop
+
+		if (debug) {
+			System.out.println("Fish growth completed.\n");
 		}
-	}
+
+	} //close growFish method
 
 	/**
 	 * Advances the game to the next player's turn. If both players have taken their
@@ -184,7 +229,7 @@ public class GameLogic {
 			// Winner calculation will be done later
 		} else {
 			System.out.println("Advancing to month: " + getCurrentMonthName());
-			growFishSingleMonth();
+			growFish(fishPond);
 		}
 	}
 
@@ -208,9 +253,9 @@ public class GameLogic {
 		} else {
 			// Hooked something!
 			FishableI_a potentialCatch = fishPond.get(hookSpot);
-			boolean actuallyCaught = random.nextBoolean();
+			isCaught = random.nextBoolean();
 
-			if (actuallyCaught) {
+			if (isCaught) {
 				// Successfully caught, remove from pond temporarily
 				fishPond.remove(hookSpot);
 				return potentialCatch;
@@ -224,7 +269,7 @@ public class GameLogic {
 	 * Processes the player's decision to keep a caught fish. Checks legality (size,
 	 * season, method) and updates sack/pond. Applies penalty if illegal.
 	 *
-	 * @param fish        The fish the player decided to keep.
+	 * @param fish The fish the player decided to keep.
 	 * @param catchMethod The method used to catch the fish (e.g., "pole", "net").
 	 * @return A String message indicating the outcome (kept legally, penalty
 	 *         applied).
