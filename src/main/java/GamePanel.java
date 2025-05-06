@@ -145,7 +145,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		appendOutput(gameLogic.getCurrentPlayerName() + " starts the tournament!");
 		appendOutput("Select a catch method and click 'Try to Catch Fish'.");
 
-		setPreferredSize(new Dimension(750, 580)); // Increased height slightly for pond label
+		setPreferredSize(new Dimension(750, 580));
 	}
 
 	/**
@@ -165,11 +165,11 @@ public class GamePanel extends JPanel implements ActionListener {
 		if (source == catchButton) {
 			handleCatchAttempt();
 		} else if (source == rulesButton) {
-			displayRules(); // Updated to use RuleViewer
+			displayRules(); 
 		} else if (source == sackButton) {
 			displaySack();
 		} else if (source == throwBackButton) {
-			handleThrowBack(); // Updated to show sack first
+			handleThrowBack(); 
 		} else if (source == keepButton) {
 			handleKeepDecision(true);
 		} else if (source == releaseButton) {
@@ -181,8 +181,10 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 	}
 
-	// --- Action Handling Methods ---
-
+	
+	/**
+	 * handleCatchAttempt.
+	 */
 	private void handleCatchAttempt() {
 		if (currentlyCaughtFish != null) {
 			appendOutput("Please decide whether to keep or release the current fish first.");
@@ -200,7 +202,7 @@ public class GamePanel extends JPanel implements ActionListener {
 			return;
 		}
 
-		appendOutput("\n" + SEPARATOR); // Separator before attempt
+		appendOutput("\n" + SEPARATOR);
 		appendOutput(
 				gameLogic.getCurrentPlayerName() + " casts out using " + selectedCatchMethod + "...");
 
@@ -240,7 +242,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 
 		appendOutput(resultMessage);
-		appendOutput(SEPARATOR); // Separator after decision
+		appendOutput(SEPARATOR);
 
 		currentlyCaughtFish = null;
 		selectedCatchMethod = null;
@@ -292,7 +294,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 
 		// 3. Show the input dialog
-		String input = (String) JOptionPane.showInputDialog(this, // Parent component
+		String input = (String) JOptionPane.showInputDialog(this,
 				"Enter the number of the fish to throw back:", // Message
 				"Throw Back Fish", // Title
 				JOptionPane.QUESTION_MESSAGE, // Message type
@@ -317,7 +319,6 @@ public class GamePanel extends JPanel implements ActionListener {
 		} else {
 			appendOutput("Throw back cancelled.");
 		}
-		// Pond size updated via actionPerformed caller
 	}
 
 	private void checkTurnEnd() {
@@ -328,7 +329,7 @@ public class GamePanel extends JPanel implements ActionListener {
 			if (gameLogic.isGameOver()) {
 				handleGameOver();
 			} else {
-				appendOutput("\n" + SEPARATOR + "\n"); // Extra separator between turns
+				appendOutput("\n" + SEPARATOR + "\n");
 				appendOutput("Month: " + gameLogic.getCurrentMonthName() + " - Fish are growing...");
 				appendOutput("It's now " + gameLogic.getCurrentPlayerName() + "'s turn.");
 				appendOutput("Select a catch method and try your luck!");
@@ -409,10 +410,10 @@ public class GamePanel extends JPanel implements ActionListener {
 			rulesButton.setEnabled(enableActions && !gameLogic.isGameOver());
 			sackButton.setEnabled(enableActions && !gameLogic.isGameOver());
 			throwBackButton.setEnabled(enableActions && !gameLogic.isGameOver()
-					&& gameLogic.getCurrentPlayer().getSackSize() > 0); // Disable if sack empty
+					&& gameLogic.getCurrentPlayer().getSackSize() > 0);
 			methodComboBox.setEnabled(canAttempt);
 
-			decisionPanel.setVisible(!enableActions && currentlyCaughtFish != null); // Show only if fish is caught
+			decisionPanel.setVisible(!enableActions && currentlyCaughtFish != null); 
 			keepButton.setEnabled(!enableActions && currentlyCaughtFish != null);
 			releaseButton.setEnabled(!enableActions && currentlyCaughtFish != null);
 

@@ -60,10 +60,10 @@ public class GameLogic {
 
 		// Initialize game state
 		fishPond = fillPond();
-		growFish(fishPond); // Grow fish for 2 years
+		growFish(fishPond);
 
-		currentPlayer = player1; // Player 1 starts
-		currentMonthIndex = 0; // Start in January
+		currentPlayer = player1;
+		currentMonthIndex = 0;
 		attemptsLeft = TURNS_PER_PLAYER;
 		isGameOver = false;
 	}
@@ -114,13 +114,9 @@ public class GameLogic {
 			al.add(new Ohua());
 		}
 
-		//for testing empty locations
-		//   for (int i = 0; i < 30; i++) {
-		//          al.remove(i);
-		//       }
 		return al;
 
-	} //fillPond method
+	} 
 
 	/**
 	 * Runs arraylist of I_a through 24 eating/growing cycles.
@@ -129,12 +125,10 @@ public class GameLogic {
 	 */
 	public static void growFish(ArrayList<FishableI_a> al) {
 		FishableI_a ia;
-		boolean debug = false; //turn printing on and off
+		boolean debug = false; 
 
 		for (int m = 0; m < 24; m++) {
-			//all fish in the pond
 			for (int i = 0; i < al.size(); i++) {
-				//loop over array 
 				if (debug) {
 					System.out.println("==========================");
 					System.out.println("Feeding  the fish" + i);
@@ -146,7 +140,7 @@ public class GameLogic {
 					System.out.println(ia);
 				}
 
-				try { //must check for need to levelUp
+				try {
 					//use EnglishName because doesn't change with size
 					if (ia.getEnglishName().equals("Striped Mullet")) {
 						ia.eat("algae");
@@ -187,13 +181,13 @@ public class GameLogic {
 					}
 				}
 			}
-		} // close m loop
+		} 
 
 		if (debug) {
 			System.out.println("Fish growth completed.\n");
 		}
 
-	} //close growFish method
+	} 
 
 	/**
 	 * Advances the game to the next player's turn. If both players have taken their
@@ -276,7 +270,7 @@ public class GameLogic {
 	 */
 	public String keepFish(FishableI_a fish, String catchMethod) {
 		if (fish == null)
-			return "Error: No fish to keep."; // Should not happen
+			return "Error: No fish to keep.";
 
 		boolean legal = checkLegality(fish, catchMethod);
 
@@ -379,7 +373,7 @@ public class GameLogic {
 			return "Catch method '" + catchMethod + "' is not allowed for " + fish.getName() + ".";
 		}
 
-		return "Unknown legality issue."; // Fallback
+		return "Unknown legality issue."; 
 	}
 
 	/**
@@ -398,10 +392,10 @@ public class GameLogic {
 
 		FishableI_a fishToReturn = currentPlayer.removeFish(index);
 		if (fishToReturn != null) {
-			fishPond.add(fishToReturn); // Add it back to the general pond
+			fishPond.add(fishToReturn);
 			return "Returned " + fishToReturn.getName() + " to the pond.";
 		} else {
-			return "Error removing fish from sack."; // Should not happen if index is valid
+			return "Error removing fish from sack."; 
 		}
 	}
 
@@ -474,9 +468,9 @@ public class GameLogic {
 	 */
 	public ArrayList<FishableI_a> getCurrentPlayerSackList() {
 		if (currentPlayer == null) {
-			return new ArrayList<>(); // Return empty list
+			return new ArrayList<>(); 
 		}
-		return currentPlayer.getSack(); // Assumes Player class has getSack()
+		return currentPlayer.getSack();
 	}
 
 	/**
