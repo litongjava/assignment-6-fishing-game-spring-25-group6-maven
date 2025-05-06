@@ -1,8 +1,20 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 /**
  * The main JPanel where the game interface is displayed. Contains labels, text
@@ -11,14 +23,19 @@ import java.util.ArrayList;
  */
 public class GamePanel extends JPanel implements ActionListener {
 
-	// --- Game Logic Reference ---
+	/**
+	 * Game Logic Reference.
+	 */
 	private GameLogic gameLogic;
 
-	// --- GUI Components ---
+	/**
+	 * GUI Components.
+	 */
 	private JLabel statusLabel;
-	// New label for pond size
+	/**
+	 * New label for pond size.
+	 */
 	private JLabel pondSizeLabel;
-	// Panel to hold status and pond size
    /**The top part of the panel.*/
 	private JPanel topPanel;
    /**Displays the font.*/
@@ -46,13 +63,22 @@ public class GamePanel extends JPanel implements ActionListener {
    /**Displays the prompt to choose a method.*/
 	private JLabel methodLabel;
 
-	// --- State Variables ---
+	/**
+	 * currentlyCaughtFish.
+	 */
 	private FishableI_a currentlyCaughtFish = null;
+	/**
+	 * selectedCatchMethod.
+	 */
 	private String selectedCatchMethod = null;
 
-	// --- Constants ---
+	/**
+	 * CATCH_METHODS.
+	 */
 	private static final String[] CATCH_METHODS = { "pole", "net", "spear", "trap", "throw net" };
-	// For output clarity
+	/**
+	 * SEPARATOR.
+	 */
 	private static final String SEPARATOR = "----------------------------------------";
 
 	/**
@@ -71,7 +97,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		statusLabel.setFont(new Font("Arial", Font.BOLD, 14));
 
-		pondSizeLabel = new JLabel(); // Initialize pond size label
+		pondSizeLabel = new JLabel(); 
 		pondSizeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		pondSizeLabel.setFont(new Font("Arial", Font.ITALIC, 12));
 
@@ -117,7 +143,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		decisionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
 		decisionPanel.add(keepButton);
 		decisionPanel.add(releaseButton);
-		decisionPanel.setVisible(false); // Initially hidden
+		decisionPanel.setVisible(false); 
 
 		// Combine Button Panels
 		JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -126,7 +152,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		bottomPanel.add(decisionPanel, BorderLayout.SOUTH);
 
 		// --- Add Components to the Main Panel ---
-		add(topPanel, BorderLayout.NORTH); // Add the combined top panel
+		add(topPanel, BorderLayout.NORTH); 
 		add(outputScrollPane, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
 
@@ -140,7 +166,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
 		// --- Initialize Display ---
 		updateStatusLabel();
-		updatePondSizeLabel(); // Initialize pond size display
+		updatePondSizeLabel(); 
 		outputArea.setText("Game Setup Complete.\n");
 		appendOutput(gameLogic.getCurrentPlayerName() + " starts the tournament!");
 		appendOutput("Select a catch method and click 'Try to Catch Fish'.");
@@ -209,7 +235,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		currentlyCaughtFish = gameLogic.attemptCatch();
 
 		if (currentlyCaughtFish == null) {
-			boolean pondMaybeEmpty = gameLogic.getPondSize() < 5; // Simple check
+			boolean pondMaybeEmpty = gameLogic.getPondSize() < 5;
 			if (pondMaybeEmpty && randomChance(0.2)) {
 				appendOutput("...and the line comes back empty. The pond feels quiet.");
 			} else if (randomChance(0.6)) {
@@ -230,9 +256,14 @@ public class GamePanel extends JPanel implements ActionListener {
 		updateStatusLabel();
 	}
 
+	/**
+	 * handleKeepDecision.
+	 * @param keep keep.
+	 */
 	private void handleKeepDecision(boolean keep) {
-		if (currentlyCaughtFish == null)
+		if (currentlyCaughtFish == null) {
 			return;
+		}
 
 		String resultMessage;
 		if (keep) {
@@ -257,16 +288,17 @@ public class GamePanel extends JPanel implements ActionListener {
 	 */
 	private void displayRules() {
 		String rules = gameLogic.getRulesSummary();
-		// Create and display the RuleViewer window
 		RuleViewer ruleWindow = new RuleViewer(rules);
-		// Center relative to the main game window if possible
 		ruleWindow.setLocationRelativeTo(SwingUtilities.getWindowAncestor(this));
-		ruleWindow.display(); // Make it visible
+		ruleWindow.display();
 	}
 
+	/**
+	 * displaySack.
+	 */
 	private void displaySack() {
 		setOutputText(gameLogic.getCurrentPlayerSackInfo());
-		appendOutput("\n(Select another action or attempt to catch again)"); // Prompt
+		appendOutput("\n(Select another action or attempt to catch again)"); 
 	}
 
 	/**
@@ -310,8 +342,6 @@ public class GamePanel extends JPanel implements ActionListener {
 				String result = gameLogic.throwBackFish(index);
 				appendOutput(result);
 				appendOutput(SEPARATOR);
-				// Optionally, redisplay the sack after throwing back
-				// displaySack();
 			} catch (NumberFormatException | StringIndexOutOfBoundsException ex) {
 				System.err.println("Error parsing throw back selection: " + input);
 				appendOutput("Invalid selection.");
@@ -321,6 +351,9 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * checkTurnEnd.
+	 */
 	private void checkTurnEnd() {
 		if (gameLogic.getAttemptsLeft() <= 0 && !gameLogic.isGameOver()) {
 			appendOutput("\n--- End of " + gameLogic.getCurrentPlayerName() + "'s Turn ---");
@@ -336,7 +369,9 @@ public class GamePanel extends JPanel implements ActionListener {
 			}
 		}
 	}
-
+	/**
+	 * handleGameOver.
+	 */
 	private void handleGameOver() {
 		appendOutput("\n" + SEPARATOR);
 		appendOutput("    GAME OVER!");
@@ -364,7 +399,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * update Status Label
+	 * update Status Label.
 	 */
 	public void updateStatusLabel() {
 		if (gameLogic != null) {
@@ -380,9 +415,14 @@ public class GamePanel extends JPanel implements ActionListener {
 			SwingUtilities.invokeLater(
 					() -> pondSizeLabel.setText("Fish in Pond: " + gameLogic.getPondSize()));
 		} else if (gameLogic != null && gameLogic.isGameOver()) {
+			System.out.print("Gave over");
 		}
 	}
 
+	/**
+	 * appendOutput.
+	 * @param text text.
+	 */
 	public void appendOutput(String text) {
 		SwingUtilities.invokeLater(() -> {
 			outputArea.append(text + "\n");
@@ -390,10 +430,17 @@ public class GamePanel extends JPanel implements ActionListener {
 		});
 	}
 
+	/**
+	 * clearOutput.
+	 */
 	public void clearOutput() {
 		SwingUtilities.invokeLater(() -> outputArea.setText(""));
 	}
 
+	/**
+	 * setOutputText.
+	 * @param text text.
+	 */
 	public void setOutputText(String text) {
 		SwingUtilities.invokeLater(() -> {
 			outputArea.setText(text + "\n");
@@ -401,6 +448,10 @@ public class GamePanel extends JPanel implements ActionListener {
 		});
 	}
 
+	/**
+	 * updateButtonStates.
+	 * @param enableActions enableActions.
+	 */
 	private void updateButtonStates(boolean enableActions) {
 		SwingUtilities.invokeLater(() -> {
 			boolean canAttempt = enableActions && gameLogic.getAttemptsLeft() > 0
@@ -427,7 +478,11 @@ public class GamePanel extends JPanel implements ActionListener {
 			}
 		});
 	}
-
+	/**
+	 * randomChance.
+	 * @param probability probability.
+	 * @return boolean.
+	 */
 	private boolean randomChance(double probability) {
 		return Math.random() < probability;
 	}

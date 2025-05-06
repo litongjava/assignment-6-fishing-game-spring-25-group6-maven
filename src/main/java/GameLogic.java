@@ -1,4 +1,4 @@
-import javax.swing.JOptionPane; // For getting player names
+import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
